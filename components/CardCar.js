@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-// src/components/CarCard.js
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
