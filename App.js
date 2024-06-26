@@ -19,17 +19,17 @@ function MainTabs() {
       <Tab.Screen
         name="Home"
         component={Home}
-        options={{ tabBarIcon: ({ color, size }) => (<Icon name="home-outline" color={color} size={size} />) }}
+        options={{ tabBarIcon: ({ color, size }) => (<Icon name="home-outline" color={color} size={size} />), headerShown: false }}
       />
       <Tab.Screen
         name="Search"
         component={SearchScreen}
-        options={{ tabBarIcon: ({ color, size }) => (<Icon name="search-outline" color={color} size={size} />) }}
+        options={{ tabBarIcon: ({ color, size }) => (<Icon name="search-outline" color={color} size={size} />), headerShown: false }}
       />
       <Tab.Screen
         name="Profile"
         component={Menu}
-        options={{ tabBarIcon: ({ color, size }) => (<Icon name="person-outline" color={color} size={size} />) }}
+        options={{ tabBarIcon: ({ color, size }) => (<Icon name="person-outline" color={color} size={size} />), headerShown: false }}
       />
     </Tab.Navigator>
   );
