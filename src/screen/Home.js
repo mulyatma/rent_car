@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import CarCard from '../../components/CardCar';
@@ -16,11 +16,19 @@ function Home({ navigation }) {
     const userName = 'User';
     const userImage = 'https://via.placeholder.com/150';
 
-    const cars = [
-        { id: '1', name: 'Car 1', image: 'https://via.placeholder.com/150' },
-        { id: '2', name: 'Car 2', image: 'https://via.placeholder.com/150' },
-        { id: '3', name: 'Car 3', image: 'https://via.placeholder.com/150' },
-    ];
+    const [cars, setCars] = useState([]);
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch(
+                'https://be-rent-car.vercel.app/cars'
+            );
+            const data = await response.json();
+            setCars(data);
+        };
+        fetchData();
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -52,12 +60,18 @@ function Home({ navigation }) {
                     </TouchableOpacity>
                 </View>
                 <FlatList
+                    // data={cars}
+                    // renderItem={({ item }) => <CarCard car={item} />}
+                    // keyExtractor={(item) => item.id}
+                    // horizontal
+                    // showsHorizontalScrollIndicator={false}
+                    // contentContainerStyle={styles.carListContainer} // Tambahkan padding pada FlatList
                     data={cars}
                     renderItem={({ item }) => <CarCard car={item} />}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item) => item._id.toString()}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={styles.carListContainer} // Tambahkan padding pada FlatList
+                    contentContainerStyle={styles.carListContainer}
                 />
             </View>
         </View>
