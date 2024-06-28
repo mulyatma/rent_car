@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
         width: 100,
         height: '80%',
         borderRadius: 8,
+        resizeMode: 'contain',
     },
     cardDetails: {
         flex: 1,
