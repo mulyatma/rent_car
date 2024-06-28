@@ -60,12 +60,6 @@ function Home({ navigation }) {
                     </TouchableOpacity>
                 </View>
                 <FlatList
-                    // data={cars}
-                    // renderItem={({ item }) => <CarCard car={item} />}
-                    // keyExtractor={(item) => item.id}
-                    // horizontal
-                    // showsHorizontalScrollIndicator={false}
-                    // contentContainerStyle={styles.carListContainer} // Tambahkan padding pada FlatList
                     data={cars}
                     renderItem={({ item }) => <CarCard car={item} />}
                     keyExtractor={(item) => item._id.toString()}

@@ -1,11 +1,14 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
 
 const CarCard = ({ car }) => {
+    const navigation = useNavigation();
+
     return (
-        <View style={styles.card}>
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('DetailCar', { car })} >
             <Image source={{ uri: car.img }} style={styles.image} />
             <Text style={styles.name}>{car.nameCar}</Text>
             <View style={styles.infoContainer}>
@@ -23,7 +26,7 @@ const CarCard = ({ car }) => {
                 </View>
             </View>
             <Text style={styles.price}>{`Rp ${car.price} /Hari`}</Text>
-        </View>
+        </TouchableOpacity>
     );
 };
 

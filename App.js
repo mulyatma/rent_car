@@ -11,6 +11,7 @@ import SearchScreen from './src/screen/Search';
 import Menu from './src/screen/Profile';
 import LoginScreen from './src/screen/LoginScreen';
 import RegisterScreen from './src/screen/RegisterScreen';
+import DetailCar from './src/screen/DetailCar';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -59,6 +60,11 @@ function App() {
         <Stack.Screen
           name="Main"
           component={MainTabs}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailCar"
+          component={DetailCar}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
