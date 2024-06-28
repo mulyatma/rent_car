@@ -1,17 +1,44 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
+import  AsyncStorage  from '@react-native-async-storage/async-storage';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
-        // Implementasi login Anda di sini
-        // Setelah login berhasil, navigasikan ke layar lain, misalnya MainTabs
-        navigation.replace('Main');
-    };
+    const handleLogin = async () => {
+        try {
+          const response = await fetch('https://be-rent-car.vercel.app/users/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: email, // Ganti dengan username yang sesuai
+              password: password, // Ganti dengan password yang sesuai
+            }),
+          });
+      
+          if (response.ok) {
+            const data = await response.json();
+                    
+            // Simpan token ke AsyncStorage
+            await AsyncStorage.setItem('@myApp:token', data.accessToken);
+            await AsyncStorage.setItem('@myApp:name', data.name);
+      
+            // Ganti halaman ke 'Main' setelah berhasil login
+            navigation.replace('Main');
+          } else {
+            console.error('Login failed');
+          }
+        } catch (error) {
+          console.error('Error during login:', error);
+        }
+      };
+      
 
+    
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Login</Text>
@@ -67,6 +94,7 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         fontSize: 16,
         backgroundColor: '#f9f9f9',
+        color: '#000'
     },
     button: {
         backgroundColor: '#007BFF',

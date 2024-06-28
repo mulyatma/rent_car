@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
 import { SearchBar } from 'react-native-elements';
+import  AsyncStorage  from '@react-native-async-storage/async-storage';
 import CarCard from '../components/CardCar';
 
 function Home({ navigation }) {
@@ -13,9 +14,8 @@ function Home({ navigation }) {
         setSearch(search);
     };
 
-    const userName = 'User';
+    const [userName, setUserName] = useState("");
     const userImage = 'https://via.placeholder.com/150';
-
     const [cars, setCars] = useState([]);
 
 
@@ -27,14 +27,28 @@ function Home({ navigation }) {
             const data = await response.json();
             setCars(data);
         };
+        const retrieveData = async () => {
+            try {
+              const value = await AsyncStorage.getItem('@myApp:name');
+              if (value !== null) {
+                  console.log(value);
+                  setUserName(value);
+              }
+            } catch (error) {
+              console.error('Error retrieving data:', error);
+            }
+          };
         fetchData();
+        retrieveData()
     }, []);
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.welcomeText}>Hai!! {userName}</Text>
-                <Image source={{ uri: userImage }} style={styles.userImage} />
+                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                    <Image source={{ uri: userImage }} style={styles.userImage} />
+                </TouchableOpacity>
             </View>
             <SearchBar
                 placeholder="Search..."
