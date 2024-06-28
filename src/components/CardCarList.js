@@ -29,7 +29,7 @@ const CardCarList = ({ car }) => {
                         </View>
                         {car.driver ? <View style={styles.info}>
                             <Icon name="person" size={20} color="#32CD32" />
-                            <Text style={styles.infoDriver}>Sopir</Text>
+                            <Text style={styles.infoDriver}> Sopir</Text>
                         </View> : null}
 
                     </View>
@@ -99,8 +99,9 @@ const styles = StyleSheet.create({
         color: '#D3D3D3',
     },
     infoDriver: {
-        color: '#32CD32'
-    }
+        fontSize: 14,
+        color: '#32CD32',
+    },
 });
 
 export default CardCarList;
