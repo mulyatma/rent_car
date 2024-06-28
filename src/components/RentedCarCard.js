@@ -4,15 +4,24 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 
 const RentedCarCard = ({ car }) => {
 
+    const formatDate = (date) => {
+        const d = new Date(date);
+        return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+    };
+
+    const formatPrice = (price) => {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    };
 
     return (
         <View style={styles.card}>
             <View style={styles.textContainer}>
-                <Text style={styles.cardName}>{car.name}</Text>
-                <Text style={styles.cardDescription}>{car.description}</Text>
-                <Text style={styles.cardPrice}>Harga: {car.price}</Text>
+                <Text style={styles.cardName}>{car.carId.nameCar}</Text>
+                <Text style={styles.cardDescription}>Sewa dari: {formatDate(car.startDate)}</Text>
+                <Text style={styles.cardDescription}>Sampai: {formatDate(car.endDate)}</Text>
+                <Text style={styles.cardPrice}>Total harga: Rp {formatPrice(car.totalPrice)}</Text>
             </View>
-            <Image source={{ uri: car.imageUrl }} style={styles.cardImage} />
+            <Image source={{ uri: car.carId.img }} style={styles.cardImage} />
         </View>
     );
 };
@@ -21,36 +30,39 @@ const styles = StyleSheet.create({
     card: {
         flexDirection: 'row',
         borderRadius: 8,
-        backgroundColor: '#f0f0f0',
+        backgroundColor: '#fff',
         marginBottom: 10,
         padding: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
+        elevation: 5,
     },
     textContainer: {
         flex: 1,
     },
-    leftText: {
-        fontSize: 14,
-        fontWeight: 'bold',
-        marginBottom: 5,
-        color: '#666',
-    },
     cardImage: {
         width: 80,
         height: 80,
+        resizeMode: 'contain',
         borderRadius: 8,
     },
     cardName: {
-        fontSize: 16,
+        fontSize: 25,
         fontWeight: 'bold',
+        color: '#000',
     },
     cardDescription: {
-        fontSize: 14,
-        color: '#666',
+        fontSize: 18,
+        color: '#000',
         marginTop: 4,
     },
     cardPrice: {
-        fontSize: 14,
-        color: '#333',
+        fontSize: 18,
+        color: '#000',
         marginTop: 4,
     },
 });
