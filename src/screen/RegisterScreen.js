@@ -1,18 +1,17 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'; // Import ikon set yang Anda pilih
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const RegisterScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [secureTextEntry, setSecureTextEntry] = useState(true); // State untuk mengontrol secureTextEntry
-    const [secureConfirmTextEntry, setSecureConfirmTextEntry] = useState(true); // State untuk konfirmasi password
+    const [secureTextEntry, setSecureTextEntry] = useState(true);
+    const [secureConfirmTextEntry, setSecureConfirmTextEntry] = useState(true);
 
     const handleRegister = () => {
-        // Implementasi register Anda di sini
-        // Setelah register berhasil, navigasikan ke layar lain, misalnya LoginScreen
+
         navigation.replace('Login');
     };
 
