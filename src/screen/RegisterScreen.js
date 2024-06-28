@@ -1,16 +1,27 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome'; // Import ikon set yang Anda pilih
 
 const RegisterScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [secureTextEntry, setSecureTextEntry] = useState(true); // State untuk mengontrol secureTextEntry
+    const [secureConfirmTextEntry, setSecureConfirmTextEntry] = useState(true); // State untuk konfirmasi password
 
     const handleRegister = () => {
         // Implementasi register Anda di sini
         // Setelah register berhasil, navigasikan ke layar lain, misalnya LoginScreen
         navigation.replace('Login');
+    };
+
+    const toggleSecureEntry = () => {
+        setSecureTextEntry(!secureTextEntry);
+    };
+
+    const toggleConfirmSecureEntry = () => {
+        setSecureConfirmTextEntry(!secureConfirmTextEntry);
     };
 
     return (
@@ -25,22 +36,32 @@ const RegisterScreen = ({ navigation }) => {
                 keyboardType="email-address"
                 autoCapitalize="none"
             />
-            <TextInput
-                style={styles.input}
-                placeholder="Password"
-                placeholderTextColor="#aaa"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Confirm Password"
-                placeholderTextColor="#aaa"
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-                secureTextEntry
-            />
+            <View style={styles.passwordContainer}>
+                <TextInput
+                    style={styles.passwordInput}
+                    placeholder="Password"
+                    placeholderTextColor="#aaa"
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry={secureTextEntry}
+                />
+                <TouchableOpacity onPress={toggleSecureEntry} style={styles.eyeIcon}>
+                    <Icon name={secureTextEntry ? 'eye-slash' : 'eye'} size={20} color="#aaa" />
+                </TouchableOpacity>
+            </View>
+            <View style={styles.passwordContainer}>
+                <TextInput
+                    style={styles.passwordInput}
+                    placeholder="Confirm Password"
+                    placeholderTextColor="#aaa"
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                    secureTextEntry={secureConfirmTextEntry}
+                />
+                <TouchableOpacity onPress={toggleConfirmSecureEntry} style={styles.eyeIcon}>
+                    <Icon name={secureConfirmTextEntry ? 'eye-slash' : 'eye'} size={20} color="#aaa" />
+                </TouchableOpacity>
+            </View>
             <TouchableOpacity style={styles.button} onPress={handleRegister}>
                 <Text style={styles.buttonText}>Register</Text>
             </TouchableOpacity>
@@ -77,6 +98,25 @@ const styles = StyleSheet.create({
         fontSize: 16,
         backgroundColor: '#f9f9f9',
     },
+    passwordContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderColor: '#ddd',
+        borderWidth: 1,
+        borderRadius: 10,
+        marginBottom: 16,
+        backgroundColor: '#f9f9f9',
+    },
+    passwordInput: {
+        flex: 1,
+        height: 50,
+        paddingHorizontal: 16,
+        fontSize: 16,
+        color: '#000',
+    },
+    eyeIcon: {
+        padding: 10,
+    },
     button: {
         backgroundColor: '#007BFF',
         paddingVertical: 12,
@@ -88,6 +128,12 @@ const styles = StyleSheet.create({
         fontSize: 18,
         textAlign: 'center',
     },
+    registerContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 16,
+    },
     registerText: {
         color: '#aaa',
         fontSize: 16,
@@ -95,11 +141,6 @@ const styles = StyleSheet.create({
     registerButtonText: {
         color: '#007BFF',
         fontSize: 16,
-    }, registerContainer: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 16,
     },
 });
 
