@@ -50,7 +50,7 @@ function SearchScreen() {
             <FlatList
                 data={cars}
                 renderItem={({ item }) => <CardCarList car={item} />}
-                keyExtractor={item => item.id}
+                keyExtractor={(item) => item._id.toString()}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.cartContainer}
             />
