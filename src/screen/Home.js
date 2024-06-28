@@ -1,23 +1,23 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, Modal, Alert } from 'react-native';
 import { SearchBar } from 'react-native-elements';
-import  AsyncStorage  from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import CarCard from '../components/CardCar';
 
 function Home({ navigation }) {
     const [search, setSearch] = useState('');
+    const [userName, setUserName] = useState("");
+    const [token, setToken] = useState('');
+    const [cars, setCars] = useState([]);
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     const heroImg = 'https://via.placeholder.com/150';
+    const userImage = 'https://via.placeholder.com/150';
 
     const updateSearch = (search) => {
         setSearch(search);
     };
-
-    const [userName, setUserName] = useState("");
-    const userImage = 'https://via.placeholder.com/150';
-    const [cars, setCars] = useState([]);
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -29,26 +29,46 @@ function Home({ navigation }) {
         };
         const retrieveData = async () => {
             try {
-              const value = await AsyncStorage.getItem('@myApp:name');
-              if (value !== null) {
-                  console.log(value);
-                  setUserName(value);
-              }
+                const valueName = await AsyncStorage.getItem('@myApp:name');
+                const valueToken = await AsyncStorage.getItem('@myApp:token');
+                if (valueToken !== null) {
+                    setUserName(valueName);
+                    setToken(valueToken);
+                }
             } catch (error) {
-              console.error('Error retrieving data:', error);
+                console.error('Error retrieving data:', error);
             }
-          };
+        };
         fetchData();
-        retrieveData()
+        retrieveData();
     }, []);
+
+    const handleLogout = async () => {
+        try {
+            await AsyncStorage.removeItem('@myApp:name');
+            await AsyncStorage.removeItem('@myApp:token');
+            setUserName("");
+            setToken("");
+            setIsModalVisible(false);
+            navigation.navigate('Login');
+        } catch (error) {
+            console.error('Error logging out:', error);
+        }
+    };
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.welcomeText}>Hai!! {userName}</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                    <Image source={{ uri: userImage }} style={styles.userImage} />
-                </TouchableOpacity>
+                <Text style={styles.welcomeText}>Hai!! {userName ? userName : 'User'}</Text>
+                {token ? (
+                    <TouchableOpacity onPress={() => setIsModalVisible(true)}>
+                        <Image source={{ uri: userImage }} style={styles.userImage} />
+                    </TouchableOpacity>
+                ) : (
+                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                        <Text style={styles.loginButton}>Login</Text>
+                    </TouchableOpacity>
+                )}
             </View>
             <SearchBar
                 placeholder="Search..."
@@ -82,6 +102,34 @@ function Home({ navigation }) {
                     contentContainerStyle={styles.carListContainer}
                 />
             </View>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={isModalVisible}
+                onRequestClose={() => {
+                    setIsModalVisible(false);
+                }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.modalText}>Yakin ingin keluar?</Text>
+                        <View style={styles.modalButtons}>
+                            <TouchableOpacity
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={() => setIsModalVisible(false)}
+                            >
+                                <Text style={styles.textStyle}>Cancel</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[styles.button, styles.buttonLogout]}
+                                onPress={handleLogout}
+                            >
+                                <Text style={styles.textStyle}>Logout</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 }
@@ -106,6 +154,10 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         borderRadius: 20,
+    },
+    loginButton: {
+        fontSize: 16,
+        color: '#007BFF',
     },
     searchContainer: {
         marginHorizontal: 10,
@@ -139,7 +191,7 @@ const styles = StyleSheet.create({
     },
     heroButton: {
         position: 'absolute',
-        bottom: 40, //masih diubah sesuai gambar
+        bottom: 40, // Adjust according to image
         left: 30,
         backgroundColor: '#007BFF',
         paddingVertical: 10,
@@ -169,6 +221,56 @@ const styles = StyleSheet.create({
     },
     carListContainer: {
         paddingHorizontal: 20,
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: 'center',
+        fontSize: 18,
+        color: '#000'
+    },
+    modalButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    button: {
+        borderRadius: 10,
+        padding: 10,
+        elevation: 2,
+        width: '45%',
+        alignItems: 'center',
+    },
+    buttonClose: {
+        backgroundColor: '#2196F3',
+    },
+    buttonLogout: {
+        backgroundColor: '#f44336',
+    },
+    textStyle: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
 });
 
