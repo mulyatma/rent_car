@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const LoginScreen = ({ navigation }) => {
@@ -10,6 +10,11 @@ const LoginScreen = ({ navigation }) => {
     const [secureTextEntry, setSecureTextEntry] = useState(true);
 
     const handleLogin = async () => {
+        if (!email || !password) {
+            Alert.alert('Login Gagal', 'Email dan password harus diisi.');
+            return;
+        }
+
         try {
             const response = await fetch('https://be-rent-car.vercel.app/users/login', {
                 method: 'POST',
@@ -29,11 +34,17 @@ const LoginScreen = ({ navigation }) => {
                 await AsyncStorage.setItem('@myApp:name', data.name);
 
                 navigation.replace('Main');
+            } else if (response.status === 400) {
+                Alert.alert('Login Gagal', 'Email tidak ditemukan.');
+            } else if (response.status === 403) {
+                Alert.alert('Login Gagal', 'Password salah.');
             } else {
                 console.error('Login failed');
+                Alert.alert('Login Failed', 'Something went wrong. Please try again.');
             }
         } catch (error) {
             console.error('Error during login:', error);
+            Alert.alert('Login Failed', 'Error during login. Please try again.');
         }
     };
 
