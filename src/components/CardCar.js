@@ -24,6 +24,10 @@ const CarCard = ({ car }) => {
                     <Icon name="local-gas-station" size={20} color="#D3D3D3" />
                     <Text style={styles.infoText}>{car.oil}</Text>
                 </View>
+                {car.driver ? <View style={styles.info}>
+                    <Icon name="person" size={20} color="#32CD32" />
+                    <Text style={styles.infoDriver}>Sopir</Text>
+                </View> : null}
             </View>
             <Text style={styles.price}>{`Rp ${car.price} /Hari`}</Text>
         </TouchableOpacity>
@@ -82,6 +86,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#000',
     },
+    infoDriver: {
+        color: '#32CD32',
+    }
 });
 
 export default CarCard;

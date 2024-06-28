@@ -1,43 +1,35 @@
-import React, { useState } from 'react';
+/* eslint-disable prettier/prettier */
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { SearchBar, Icon } from 'react-native-elements';
-import CardCarList from '../components/CardCarList'; // Sesuaikan path sesuai dengan struktur proyek Anda
+import CardCarList from '../components/CardCarList';
 
 function SearchScreen() {
     const [search, setSearch] = useState('');
-    const [drive, setDrive] = useState(false); // State untuk menentukan apakah drive aktif atau tidak
+    const [drive, setDrive] = useState(false);
+    const [cars, setCars] = useState([]);
 
     const updateSearch = (search) => {
         setSearch(search);
     };
 
     const handleUserIconPress = () => {
-        setDrive(prevDrive => !prevDrive); // Mengubah state drive menjadi kebalikan dari nilai sebelumnya
+        setDrive(prevDrive => !prevDrive);
     };
 
-    // Dummy data for demonstration
-    const carData = [
-        {
-            id: '1',
-            name: 'Toyota Camry',
-            description: 'Spacious and reliable sedan.',
-            imageUrl: 'https://example.com/toyota-camry.jpg',
-        },
-        {
-            id: '2',
-            name: 'Honda Civic',
-            description: 'Compact and fuel-efficient.',
-            imageUrl: 'https://example.com/honda-civic.jpg',
-        },
-        {
-            id: '3',
-            name: 'Tesla Model 3',
-            description: 'Electric sedan with advanced features.',
-            imageUrl: 'https://example.com/tesla-model-3.jpg',
-        },
-    ];
 
-    const renderCarCard = ({ item }) => <CardCarList car={item} />;
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch(
+                `https://be-rent-car.vercel.app/cars?driver=${drive}&nameCar=${search}`
+            );
+            const data = await response.json();
+            setCars(data);
+        };
+
+        fetchData();
+    }, [drive, search]);
 
     return (
         <View style={styles.container}>
@@ -56,10 +48,11 @@ function SearchScreen() {
                 </TouchableOpacity>
             </View>
             <FlatList
-                data={carData}
-                renderItem={renderCarCard}
+                data={cars}
+                renderItem={({ item }) => <CardCarList car={item} />}
                 keyExtractor={item => item.id}
                 showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.cartContainer}
             />
         </View>
     );
@@ -100,6 +93,10 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         color: '#D3D3D3',
     },
+    cartContainer: {
+        paddingHorizontal: 20,
+        paddingTop: 5
+    }
 });
 
 export default SearchScreen;
