@@ -13,7 +13,7 @@ function Home({ navigation }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const heroImg = 'https://via.placeholder.com/150';
-    const userImage = 'https://via.placeholder.com/150';
+    const userImage = 'https://res.cloudinary.com/dnlogcrtc/image/upload/v1719605309/dummy_profile_xhc9th.png';
 
     const updateSearch = (search) => {
         setSearch(search);
