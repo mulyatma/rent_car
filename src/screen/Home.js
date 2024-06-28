@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
 import { SearchBar } from 'react-native-elements';
-import CarCard from '../../components/CardCar';
+import CarCard from '../components/CardCar';
 
 function Home({ navigation }) {
     const [search, setSearch] = useState('');

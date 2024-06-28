@@ -81,8 +81,8 @@ const DetailCar = ({ route }) => {
             </View>
             <Text style={styles.aboutTitle}>About Car</Text>
             <Text style={styles.aboutText}>
-                {/* Masukkan deskripsi mobil di sini */}
-                This is a detailed description of the car. It includes all the necessary information about the car.
+                <Text>
+                    { car.about }</Text>                
             </Text>
         </View>
     );
