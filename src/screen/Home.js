@@ -82,14 +82,14 @@ function Home({ navigation }) {
                 <View style={styles.heroWrapper}>
                     <View style={styles.hero}>
                         <Image source={{ uri: heroImg }} style={styles.heroImage} />
-                        <TouchableOpacity style={styles.heroButton} onPress={() => navigation.navigate('Search')}>
+                        <TouchableOpacity style={styles.heroButton} onPress={() => navigation.navigate('Cari')}>
                             <Text style={styles.heroButtonText}>Sewa Sekarang</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
                 <View style={styles.popularCarsContainer}>
                     <Text style={styles.popularCarsText}>Mobil Populer</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Cari')}>
                         <Text style={styles.seeAllText}>Lihat Semua</Text>
                     </TouchableOpacity>
                 </View>
