@@ -1,31 +1,41 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { SearchBar, Icon } from 'react-native-elements';
+import DropDownPicker from 'react-native-dropdown-picker';
 import CardCarList from '../components/CardCarList';
 
 function SearchScreen() {
     const [search, setSearch] = useState('');
-    const [drive, setDrive] = useState(false);
+    const [drive, setDrive] = useState(null);
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(null);
+    const [items, setItems] = useState([
+        { label: 'Tanpa Sopir', value: false },
+        { label: 'Dengan Sopir', value: true },
+        { label: 'Tampilkan semua', value: null },
+    ]);
     const [cars, setCars] = useState([]);
 
     const updateSearch = (search) => {
         setSearch(search);
     };
 
-    const handleUserIconPress = () => {
-        setDrive(prevDrive => !prevDrive);
-    };
-
-
-
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch(
-                `https://be-rent-car.vercel.app/cars?driver=${drive}&nameCar=${search}`
-            );
-            const data = await response.json();
-            setCars(data);
+            if (drive !== null) {
+                const response = await fetch(
+                    `https://be-rent-car.vercel.app/cars?driver=${drive}&nameCar=${search}`
+                );
+                const data = await response.json();
+                setCars(data);
+            } else {
+                const response = await fetch(
+                    `https://be-rent-car.vercel.app/cars?&nameCar=${search}`
+                );
+                const data = await response.json();
+                setCars(data);
+            }
         };
 
         fetchData();
@@ -42,10 +52,25 @@ function SearchScreen() {
                     inputContainerStyle={styles.searchInputContainer}
                     inputStyle={styles.searchInput}
                 />
-                <TouchableOpacity style={styles.iconContainer} onPress={handleUserIconPress}>
-                    <Icon name="person" size={20} color={drive ? '#32CD32' : '#D3D3D3'} />
-                    <Text style={[styles.iconText, { color: drive ? '#32CD32' : '#D3D3D3' }]}>Sopir</Text>
-                </TouchableOpacity>
+                <DropDownPicker
+                    open={open}
+                    placeholder="Sopir"
+                    value={value}
+                    items={items}
+                    setOpen={setOpen}
+                    setValue={setValue}
+                    setItems={setItems}
+                    onChangeValue={(value) => setDrive(value)}
+                    containerStyle={styles.dropdownContainer}
+                    style={styles.dropdown}
+                    dropDownStyle={styles.dropdown}
+                    textStyle={styles.dropdownText}
+                    labelStyle={styles.dropdownLabel}
+                    showArrowIcon={false}
+                    itemSeparator={true}
+                    placeholderStyle={{ fontWeight: 'bold', }}
+
+                />
             </View>
             <FlatList
                 data={cars}
@@ -84,18 +109,27 @@ const styles = StyleSheet.create({
     searchInput: {
         color: '#000',
     },
-    iconContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: 10,
+    dropdownContainer: {
+        width: 90,
+        marginLeft: 10,
     },
-    iconText: {
-        marginLeft: 5,
-        color: '#D3D3D3',
+    dropdown: {
+        backgroundColor: '#e0e0e0',
+        borderRadius: 8,
+        borderWidth: 0,
+        maxHeight: 200,
+    },
+    dropdownText: {
+        fontSize: 14,
+        textAlign: 'center',
+    },
+    dropdownLabel: {
+        fontSize: 14,
+        color: '#000',
     },
     cartContainer: {
         paddingHorizontal: 20,
-        paddingTop: 5
+        paddingTop: 5,
     }
 });
 
