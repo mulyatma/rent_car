@@ -1,17 +1,33 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [secureTextEntry, setSecureTextEntry] = useState(true);
+    const [emailErrorMessage, setEmailErrorMessage] = useState('');
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
     const handleLogin = async () => {
-        if (!email || !password) {
-            Alert.alert('Login Gagal', 'Email dan password harus diisi.');
+        let hasError = false;
+        if (!email) {
+            setEmailErrorMessage('Email harus diisi.');
+            hasError = true;
+        } else {
+            setEmailErrorMessage('');
+        }
+
+        if (!password) {
+            setPasswordErrorMessage('Password harus diisi.');
+            hasError = true;
+        } else {
+            setPasswordErrorMessage('');
+        }
+
+        if (hasError) {
             return;
         }
 
@@ -35,16 +51,20 @@ const LoginScreen = ({ navigation }) => {
 
                 navigation.replace('Main');
             } else if (response.status === 400) {
-                Alert.alert('Login Gagal', 'Email tidak ditemukan.');
+                setEmailErrorMessage('Email tidak ditemukan.');
+                setPasswordErrorMessage('');
             } else if (response.status === 403) {
-                Alert.alert('Login Gagal', 'Password salah.');
+                setPasswordErrorMessage('Password salah.');
+                setEmailErrorMessage('');
             } else {
                 console.error('Login failed');
-                Alert.alert('Login Failed', 'Something went wrong. Please try again.');
+                setEmailErrorMessage('Something went wrong. Please try again.');
+                setPasswordErrorMessage('');
             }
         } catch (error) {
             console.error('Error during login:', error);
-            Alert.alert('Login Failed', 'Error during login. Please try again.');
+            setEmailErrorMessage('Error during login. Please try again.');
+            setPasswordErrorMessage('');
         }
     };
 
@@ -58,31 +78,33 @@ const LoginScreen = ({ navigation }) => {
                 <Icon name="car-side" size={120} color="#000" style={styles.carIcon} />
                 <Text style={styles.title}>Login</Text>
             </View>
-            <TextInput
-                style={styles.input}
-                placeholder="Email"
-                placeholderTextColor="#aaa"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-            />
-            <View style={styles.passwordContainer}>
+            <View style={styles.formContainer}>
                 <TextInput
-                    style={styles.passwordInput}
-                    placeholder="Password"
-                    placeholderTextColor="#aaa"
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry={secureTextEntry}
+                    style={[styles.input, emailErrorMessage && styles.errorInput]}
+                    placeholder={emailErrorMessage ? emailErrorMessage : "Email"}
+                    placeholderTextColor={emailErrorMessage ? 'red' : '#aaa'}
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
                 />
-                <TouchableOpacity onPress={toggleSecureEntry} style={styles.eyeIcon}>
-                    <Icon name={secureTextEntry ? 'eye-off' : 'eye'} size={20} color="#aaa" />
+                <View style={styles.passwordContainer}>
+                    <TextInput
+                        style={[styles.passwordInput, passwordErrorMessage && styles.errorInput]}
+                        placeholder={passwordErrorMessage ? passwordErrorMessage : "Password"}
+                        placeholderTextColor={passwordErrorMessage ? 'red' : '#aaa'}
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry={secureTextEntry}
+                    />
+                    <TouchableOpacity onPress={toggleSecureEntry} style={styles.eyeIcon}>
+                        <Icon name={secureTextEntry ? 'eye-off' : 'eye'} size={20} color="#aaa" />
+                    </TouchableOpacity>
+                </View>
+                <TouchableOpacity style={styles.button} onPress={handleLogin}>
+                    <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
             <View style={styles.registerContainer}>
                 <Text style={styles.registerText}>Belum punya akun? </Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Register')}>
@@ -112,16 +134,27 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
+    formContainer: {
+        marginBottom: 35,
+    },
+    errorText: {
+        color: 'red',
+        fontSize: 14,
+        marginBottom: 8,
+    },
     input: {
         height: 50,
         borderColor: '#ddd',
         borderWidth: 1,
         borderRadius: 10,
         paddingHorizontal: 16,
-        marginBottom: 16,
+        marginBottom: 8,
         fontSize: 16,
         backgroundColor: '#f9f9f9',
-        color: '#000'
+        color: '#000',
+    },
+    errorInput: {
+        borderColor: 'red',
     },
     passwordContainer: {
         flexDirection: 'row',
@@ -129,7 +162,6 @@ const styles = StyleSheet.create({
         borderColor: '#ddd',
         borderWidth: 1,
         borderRadius: 10,
-        marginBottom: 35,
         backgroundColor: '#f9f9f9',
     },
     passwordInput: {
@@ -146,7 +178,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#007BFF',
         paddingVertical: 12,
         borderRadius: 10,
-        marginBottom: 16,
+        marginTop: 16,
     },
     buttonText: {
         color: '#fff',
@@ -158,7 +190,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 16,
     },
     registerText: {
         color: '#aaa',
