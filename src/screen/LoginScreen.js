@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -54,7 +54,10 @@ const LoginScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Login</Text>
+            <View style={styles.iconAndTitleContainer}>
+                <Icon name="car-side" size={120} color="#000" style={styles.carIcon} />
+                <Text style={styles.title}>Login</Text>
+            </View>
             <TextInput
                 style={styles.input}
                 placeholder="Email"
@@ -74,7 +77,7 @@ const LoginScreen = ({ navigation }) => {
                     secureTextEntry={secureTextEntry}
                 />
                 <TouchableOpacity onPress={toggleSecureEntry} style={styles.eyeIcon}>
-                    <Icon name={secureTextEntry ? 'eye-slash' : 'eye'} size={20} color="#aaa" />
+                    <Icon name={secureTextEntry ? 'eye-off' : 'eye'} size={20} color="#aaa" />
                 </TouchableOpacity>
             </View>
             <TouchableOpacity style={styles.button} onPress={handleLogin}>
@@ -93,15 +96,21 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        padding: 16,
+        paddingTop: 100,
+        paddingHorizontal: 16,
         backgroundColor: '#fff',
+    },
+    iconAndTitleContainer: {
+        alignItems: 'center',
+        marginBottom: 24,
+    },
+    carIcon: {
+        marginBottom: 60,
     },
     title: {
         fontSize: 32,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginBottom: 24,
     },
     input: {
         height: 50,
@@ -120,7 +129,7 @@ const styles = StyleSheet.create({
         borderColor: '#ddd',
         borderWidth: 1,
         borderRadius: 10,
-        marginBottom: 16,
+        marginBottom: 35,
         backgroundColor: '#f9f9f9',
     },
     passwordInput: {
@@ -143,6 +152,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 18,
         textAlign: 'center',
+        fontWeight: 'bold',
     },
     registerContainer: {
         flexDirection: 'row',

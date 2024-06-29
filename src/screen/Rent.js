@@ -97,13 +97,13 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     notLoggedInText: {
-        fontSize: 18,
+        fontSize: 25,
         color: '#000',
         marginBottom: 20,
         textAlign: 'center',
     },
     loginButton: {
-        backgroundColor: '#32CD32',
+        backgroundColor: '#007BFF',
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,

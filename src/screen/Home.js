@@ -204,6 +204,7 @@ const styles = StyleSheet.create({
     heroButtonText: {
         color: '#007BFF',
         fontSize: 16,
+        fontWeight: 'bold',
     },
     popularCarsContainer: {
         flexDirection: 'row',
@@ -211,19 +212,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 30,
         paddingHorizontal: 20,
-        paddingBottom: 20,
+        paddingBottom: 10,
     },
     popularCarsText: {
-        fontSize: 20,
+        fontSize: 24,
         fontWeight: 'bold',
         color: '#000',
     },
     seeAllText: {
         fontSize: 18,
         color: '#007BFF',
+        fontWeight: 'bold',
     },
     carListContainer: {
         paddingHorizontal: 20,
+        paddingTop: 8,
     },
     modalContainer: {
         flex: 1,

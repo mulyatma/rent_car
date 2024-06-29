@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const RegisterScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -11,7 +11,6 @@ const RegisterScreen = ({ navigation }) => {
     const [secureConfirmTextEntry, setSecureConfirmTextEntry] = useState(true);
 
     const handleRegister = () => {
-
         navigation.replace('Login');
     };
 
@@ -25,7 +24,10 @@ const RegisterScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Register</Text>
+            <View style={styles.iconAndTitleContainer}>
+                <Icon name="car-side" size={120} color="#000" style={styles.carIcon} />
+                <Text style={styles.title}>Register</Text>
+            </View>
             <TextInput
                 style={styles.input}
                 placeholder="Email"
@@ -45,10 +47,10 @@ const RegisterScreen = ({ navigation }) => {
                     secureTextEntry={secureTextEntry}
                 />
                 <TouchableOpacity onPress={toggleSecureEntry} style={styles.eyeIcon}>
-                    <Icon name={secureTextEntry ? 'eye-slash' : 'eye'} size={20} color="#aaa" />
+                    <Icon name={secureTextEntry ? 'eye-off' : 'eye'} size={20} color="#aaa" />
                 </TouchableOpacity>
             </View>
-            <View style={styles.passwordContainer}>
+            <View style={styles.conPasswordContainer}>
                 <TextInput
                     style={styles.passwordInput}
                     placeholder="Confirm Password"
@@ -58,7 +60,7 @@ const RegisterScreen = ({ navigation }) => {
                     secureTextEntry={secureConfirmTextEntry}
                 />
                 <TouchableOpacity onPress={toggleConfirmSecureEntry} style={styles.eyeIcon}>
-                    <Icon name={secureConfirmTextEntry ? 'eye-slash' : 'eye'} size={20} color="#aaa" />
+                    <Icon name={secureConfirmTextEntry ? 'eye-off' : 'eye'} size={20} color="#aaa" />
                 </TouchableOpacity>
             </View>
             <TouchableOpacity style={styles.button} onPress={handleRegister}>
@@ -77,15 +79,21 @@ const RegisterScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        padding: 16,
+        paddingTop: 75,
+        paddingHorizontal: 16,
         backgroundColor: '#fff',
+    },
+    iconAndTitleContainer: {
+        alignItems: 'center',
+        marginBottom: 24,
+    },
+    carIcon: {
+        marginBottom: 50,
     },
     title: {
         fontSize: 32,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginBottom: 24,
     },
     input: {
         height: 50,
@@ -104,6 +112,15 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 10,
         marginBottom: 16,
+        backgroundColor: '#f9f9f9',
+    },
+    conPasswordContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderColor: '#ddd',
+        borderWidth: 1,
+        borderRadius: 10,
+        marginBottom: 35,
         backgroundColor: '#f9f9f9',
     },
     passwordInput: {
@@ -126,6 +143,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 18,
         textAlign: 'center',
+        fontWeight: 'bold',
     },
     registerContainer: {
         flexDirection: 'row',
