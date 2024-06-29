@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
     },
     welcomeText: {
-        fontSize: 18,
+        fontSize: 20,
         color: '#000',
     },
     userImage: {
@@ -158,7 +158,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
     },
     loginButton: {
-        fontSize: 16,
+        fontSize: 20,
+        fontWeight: 'bold',
         color: '#007BFF',
     },
     searchContainer: {
