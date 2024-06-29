@@ -9,8 +9,40 @@ const RegisterScreen = ({ navigation }) => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [secureTextEntry, setSecureTextEntry] = useState(true);
     const [secureConfirmTextEntry, setSecureConfirmTextEntry] = useState(true);
+    const [emailErrorMessage, setEmailErrorMessage] = useState('');
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+    const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] = useState('');
 
     const handleRegister = () => {
+        let hasError = false;
+        if (!email) {
+            setEmailErrorMessage('Email harus diisi.');
+            hasError = true;
+        } else {
+            setEmailErrorMessage('');
+        }
+
+        if (!password) {
+            setPasswordErrorMessage('Password harus diisi.');
+            hasError = true;
+        } else {
+            setPasswordErrorMessage('');
+        }
+
+        if (!confirmPassword) {
+            setConfirmPasswordErrorMessage('Konfirmasi password harus diisi.');
+            hasError = true;
+        } else if (confirmPassword !== password) {
+            setConfirmPasswordErrorMessage('Password tidak cocok.');
+            hasError = true;
+        } else {
+            setConfirmPasswordErrorMessage('');
+        }
+
+        if (hasError) {
+            return;
+        }
+
         navigation.replace('Login');
     };
 
@@ -29,9 +61,9 @@ const RegisterScreen = ({ navigation }) => {
                 <Text style={styles.title}>Register</Text>
             </View>
             <TextInput
-                style={styles.input}
-                placeholder="Email"
-                placeholderTextColor="#aaa"
+                style={[styles.input, emailErrorMessage && styles.errorInput]}
+                placeholder={emailErrorMessage ? emailErrorMessage : "Email"}
+                placeholderTextColor={emailErrorMessage ? 'red' : '#aaa'}
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
@@ -39,9 +71,9 @@ const RegisterScreen = ({ navigation }) => {
             />
             <View style={styles.passwordContainer}>
                 <TextInput
-                    style={styles.passwordInput}
-                    placeholder="Password"
-                    placeholderTextColor="#aaa"
+                    style={[styles.passwordInput, passwordErrorMessage && styles.errorInput]}
+                    placeholder={passwordErrorMessage ? passwordErrorMessage : "Password"}
+                    placeholderTextColor={passwordErrorMessage ? 'red' : '#aaa'}
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry={secureTextEntry}
@@ -52,9 +84,9 @@ const RegisterScreen = ({ navigation }) => {
             </View>
             <View style={styles.conPasswordContainer}>
                 <TextInput
-                    style={styles.passwordInput}
-                    placeholder="Confirm Password"
-                    placeholderTextColor="#aaa"
+                    style={[styles.passwordInput, confirmPasswordErrorMessage && styles.errorInput]}
+                    placeholder={confirmPasswordErrorMessage ? confirmPasswordErrorMessage : "Confirm Password"}
+                    placeholderTextColor={confirmPasswordErrorMessage ? 'red' : '#aaa'}
                     value={confirmPassword}
                     onChangeText={setConfirmPassword}
                     secureTextEntry={secureConfirmTextEntry}
@@ -104,6 +136,10 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         fontSize: 16,
         backgroundColor: '#f9f9f9',
+        color: '#000',
+    },
+    errorInput: {
+        borderColor: 'red',
     },
     passwordContainer: {
         flexDirection: 'row',
@@ -149,7 +185,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 16,
     },
     registerText: {
         color: '#aaa',
