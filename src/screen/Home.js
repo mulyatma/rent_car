@@ -5,6 +5,9 @@ import { SearchBar } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CarCard from '../components/CardCar';
 
+// Import the local image
+import heroImg from '../assets/images/heroImage.png';
+
 function Home({ navigation }) {
     const [search, setSearch] = useState('');
     const [userName, setUserName] = useState("");
@@ -12,7 +15,6 @@ function Home({ navigation }) {
     const [cars, setCars] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
-    const heroImg = 'https://via.placeholder.com/150';
     const userImage = 'https://res.cloudinary.com/dnlogcrtc/image/upload/v1719605309/dummy_profile_xhc9th.png';
 
     const updateSearch = (search) => {
@@ -81,7 +83,7 @@ function Home({ navigation }) {
             <View>
                 <View style={styles.heroWrapper}>
                     <View style={styles.hero}>
-                        <Image source={{ uri: heroImg }} style={styles.heroImage} />
+                        <Image source={heroImg} style={styles.heroImage} />
                         <TouchableOpacity style={styles.heroButton} onPress={() => navigation.navigate('Cari')}>
                             <Text style={styles.heroButtonText}>Sewa Sekarang</Text>
                         </TouchableOpacity>
@@ -193,13 +195,13 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 40, // Adjust according to image
         left: 30,
-        backgroundColor: '#007BFF',
+        backgroundColor: '#fff',
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 10,
     },
     heroButtonText: {
-        color: '#fff',
+        color: '#007BFF',
         fontSize: 16,
     },
     popularCarsContainer: {
